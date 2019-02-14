@@ -5,8 +5,7 @@
  */
 package rotina;
 
-import dao.UploadDAO;
-import entidade.Oficio;
+import dao.RespostaDAO;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JOptionPane;
@@ -18,13 +17,10 @@ import util.Utils;
  */
 public class UploadAOF {
 
-    UploadDAO uploadDAO = new UploadDAO();
-//    public static void main(String[] args) throws IOException, InterruptedException {
-//        
-//        String diretorio = "C:\\Users\\f5078775\\Desktop\\DocumentosAOF";
-//        lerDiretorio(diretorio);
-//    }
+    RespostaDAO uploadDAO = new RespostaDAO();
 
+    
+    
     public void lerDiretorio(String diretorio) throws IOException, InterruptedException {
 
         File pasta = new File(diretorio);
@@ -52,14 +48,11 @@ public class UploadAOF {
                      String caminhoCompleto = caminhoPastaSubpasta + "\\" + nomeSubpasta + "\\" + nomeArquivo;
                     
                     
-                    Oficio uploadOficio = new Oficio();
+                   // Oficio uploadOficio = new Oficio();
 
                     String aof = Utils.tratarVariavel(nomeSubpasta);
 
-                    uploadOficio.setNomeArquivo(caminhoCompleto);
-                    uploadOficio.setAof(aof);
-
-                    uploadDAO.salvar(uploadOficio);
+                  //O.salvar(uploadOficio);
 
                 }
 

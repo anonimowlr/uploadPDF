@@ -568,6 +568,25 @@ public class Utils {
         return numeroConvertido;
     }
 
+    public static Calendar converterParaCalendar(String dataTexto) throws ParseException {
+        SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");
+        Date data1 =(Date)form.parse(dataTexto);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(data1);
+       
+        return  cal;
+
+
+    }
+
+    public static Calendar getDataAtualCalendar() {
+        Calendar dataAtual = Calendar.getInstance();
+        
+        return  dataAtual;
+    
+    
+    }
+
         
     /**
      * Converte uma data String(ano-mes-dia) para um objeto Date em formato MySql(DATE)

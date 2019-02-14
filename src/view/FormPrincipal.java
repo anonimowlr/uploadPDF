@@ -4,22 +4,29 @@
  * and open the template in the editor.
  */
 package view;
+
+import entidade.DataExecucao;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.File;
 import java.net.URL;
-import java.sql.SQLException;
+import java.text.ParseException;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import rotina.LerTxtTarefas;
 import rotina.UploadAofPortal;
+import util.Utils;
 
 /**
  *
  * @author F4618689
  */
 public class FormPrincipal extends javax.swing.JFrame {
+
     /**
      * Creates new form Tela
      */
@@ -59,8 +66,10 @@ public class FormPrincipal extends javax.swing.JFrame {
         label7 = new java.awt.Label();
         jLabel10 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        txtAviso = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
 
@@ -137,7 +146,20 @@ public class FormPrincipal extends javax.swing.JFrame {
                 .addGap(0, 18, Short.MAX_VALUE))
         );
 
+        txtAviso.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        txtAviso.setForeground(new java.awt.Color(0, 0, 204));
+        txtAviso.setAlignmentX(1.0F);
+        txtAviso.setAlignmentY(2.0F);
+
         jMenu3.setText("Iniciar");
+
+        jMenuItem2.setText("Importar  TXT");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem2);
 
         jMenuItem4.setText("Ler pasta com Documentos");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
@@ -164,12 +186,17 @@ public class FormPrincipal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtAviso, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(192, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(txtAviso, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(136, Short.MAX_VALUE))
         );
 
         pack();
@@ -181,22 +208,70 @@ public class FormPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        FormProgressoUploadOficio  form = new  FormProgressoUploadOficio();
+        FormProgressoUploadOficio form = new FormProgressoUploadOficio();
         form.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-       
+
         UploadAofPortal uploadAofportal = new UploadAofPortal();
         uploadAofportal.start();
-        
-        
-        
+
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        
+        try {
+            DataExecucao dataExecucao = new DataExecucao();
+            
+            String data = null;
+            
+            while (data == null || data.equals("")) {
+                
+                data = JOptionPane.showInputDialog("Informe a data das pastas no diretório G:","dd/mm/yyyy");
+                
+                if (data == null || data.equals("")) {
+                    
+                    JOptionPane.showMessageDialog(null,
+                            
+                            "Você não informou uma data válida");
+                }
+                
+            }
+            
+            dataExecucao.setDataExec(Utils.converterParaCalendar(data));
+
+            LerTxtTarefas importar = new LerTxtTarefas();
+
+            JFileChooser arquivo = Utils.getFileChooser();
+
+            int returnVal = arquivo.showOpenDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                Utils.setLastDir(arquivo.getSelectedFile());
+                String arquivoSelecionado = arquivo.getSelectedFile().getAbsolutePath();
+                File f = new File(arquivoSelecionado);
+                long tamanho = (f.length() / 1024) / 1024;
+
+                int comprimento = arquivoSelecionado.length();
+               
+                 txtAviso.setText("Aguarde o fim da importação do arquivo " );
+                importar.importarTxt(arquivoSelecionado, dataExecucao);
+               
+                
+
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "erro - " + ex);
+        }
+
+
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     /**
-     * @param args the command line arguments
-     */
+         * @param args the command line arguments
+         */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -253,9 +328,11 @@ public class FormPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem29;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel14;
     private java.awt.Label label7;
+    private javax.swing.JLabel txtAviso;
     // End of variables declaration//GEN-END:variables
 }

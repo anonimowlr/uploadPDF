@@ -5,8 +5,6 @@
  */
 package rotina;
 
-import dao.UploadDAO;
-import entidade.Oficio;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -19,8 +17,6 @@ import util.Utils;
  * @author f5078775
  */
 public class UploadAofPortal extends Thread{
- List<Oficio> listaOficio;
- UploadDAO uploadDAO = new UploadDAO();   
  Coletas coletas = new Coletas();   
  
  
@@ -31,10 +27,10 @@ public class UploadAofPortal extends Thread{
      
      
    criarLista();  
-   if(listaOficio.size()<=0){
-       JOptionPane.showMessageDialog(null, "Não há arquivos no banco de dados para carregar no portal jurídico");
-       return;
-   }
+//   if(listaOficio.size()<=0){
+//       JOptionPane.showMessageDialog(null, "Não há arquivos no banco de dados para carregar no portal jurídico");
+//       return;
+//   }
    
    if(driver==null){
        coletas.autenticarUsuario();
@@ -52,9 +48,9 @@ public class UploadAofPortal extends Thread{
  
   private void criarLista() {
         
-       listaOficio = new ArrayList<>();
-       
-       listaOficio = uploadDAO.buscar();
+//       listaOficio = new ArrayList<>();
+//       
+//       listaOficio = uploadDAO.buscar();
 
 
 
@@ -72,27 +68,27 @@ public class UploadAofPortal extends Thread{
       
        
        
-        for (Oficio oficio : listaOficio) {
-            
-            carregarPortalEnvioContinuado(oficio);
-            
-        }
-        
+//        for (Oficio oficio : listaOficio) {
+//            
+//            carregarPortalEnvioContinuado(oficio);
+//            
+//        }
+//        
         
         
     }
 
-    private void carregarPortalEnvioContinuado(Oficio oficio) throws Exception {
+//    private void carregarPortalEnvioContinuado(Oficio oficio) throws Exception {
         
        JavascriptExecutor js = (JavascriptExecutor)driver;
       
-       coletas.setURL("https://juridico.intranet.bb.com.br/wfj/oficio/triagem/cumprimentoContinuado/listar");
-       coletas.aguardaElementoTelaByID("triagemForm:tipoDocumentoDecorate:tipoDocumentoListBox");
-       
-       coletas.procuraElementoPorId(driver, "triagemForm:anoRastreamento", oficio.getAof().subSequence(0, 4).toString());
-       coletas.procuraElementoPorId(driver, "triagemForm:sequencialRastreamento", oficio.getAof().subSequence(4, oficio.getAof().length()).toString());
-       
-       coletas.clickElementId(driver, "triagemForm:btFiltrarTriagem");
+//       coletas.setURL("https://juridico.intranet.bb.com.br/wfj/oficio/triagem/cumprimentoContinuado/listar");
+//       coletas.aguardaElementoTelaByID("triagemForm:tipoDocumentoDecorate:tipoDocumentoListBox");
+//       
+//       coletas.procuraElementoPorId(driver, "triagemForm:anoRastreamento", oficio.getAof().subSequence(0, 4).toString());
+//       coletas.procuraElementoPorId(driver, "triagemForm:sequencialRastreamento", oficio.getAof().subSequence(4, oficio.getAof().length()).toString());
+//       
+//       coletas.clickElementId(driver, "triagemForm:btFiltrarTriagem");
 
 
 
@@ -100,34 +96,34 @@ public class UploadAofPortal extends Thread{
 
 
        
-       
-       String msg = null;
-       boolean b = coletas.isElementPresentXpath(driver, ".//*[@id='thisForm:upload:fileItems']/table/tbody/tr/td[1]/div[3]");
-    
-        if(b){
-          msg = coletas.lerValorElementoByXpth(".//*[@id='thisForm:upload:fileItems']/table/tbody/tr/td[1]/div[3]");
-        } else{
-            return;
-        }
-       
-       
-        while(!msg.equals("Enviado com Sucesso!")){
-            coletas.pausar(1000);
-            msg = coletas.lerValorElementoByXpth(".//*[@id='thisForm:upload:fileItems']/table/tbody/tr/td[1]/div[3]");
-        }
-        
-        if(msg.equals("Enviado com Sucesso!")){
-            oficio.setObs(msg);
-            oficio.setStatus("Enviado");
-            oficio.setDataEnvio(Utils.getDataAtualFormatoMysql());
-           
-            
-        }
-        
-        uploadDAO.salvar(oficio);
-        
-       
-    }
+//       
+//       String msg = null;
+//       boolean b = coletas.isElementPresentXpath(driver, ".//*[@id='thisForm:upload:fileItems']/table/tbody/tr/td[1]/div[3]");
+//    
+//        if(b){
+//          msg = coletas.lerValorElementoByXpth(".//*[@id='thisForm:upload:fileItems']/table/tbody/tr/td[1]/div[3]");
+//        } else{
+//            return;
+//        }
+//       
+//       
+//        while(!msg.equals("Enviado com Sucesso!")){
+//            coletas.pausar(1000);
+//            msg = coletas.lerValorElementoByXpth(".//*[@id='thisForm:upload:fileItems']/table/tbody/tr/td[1]/div[3]");
+//        }
+//        
+//        if(msg.equals("Enviado com Sucesso!")){
+//            oficio.setObs(msg);
+//            oficio.setStatus("Enviado");
+//            oficio.setDataEnvio(Utils.getDataAtualFormatoMysql());
+//           
+//            
+//        }
+//        
+//        uploadDAO.salvar(oficio);
+//        
+//       
+//    }
 
    
 }
