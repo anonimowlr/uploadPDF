@@ -7,6 +7,7 @@ package dao;
 
 import entidade.DataExecucao;
 import entidade.Resposta;
+import java.util.List;
 import javax.persistence.EntityManager;
 import jpa.EntityManagerUtil;
 
@@ -40,6 +41,13 @@ public class RespostaDAO {
             em.getTransaction().rollback();
             return false;
         }
+
+    }
+
+    public List<DataExecucao> buscar() {
+     return   em.createQuery("From DataExecucao c where c.realizada = null").getResultList();
+
+
 
     }
     

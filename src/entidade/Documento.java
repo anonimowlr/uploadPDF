@@ -7,6 +7,8 @@ package entidade;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,12 +22,72 @@ import javax.persistence.ManyToOne;
 public class Documento {
     
     @Id
-    Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     @Column(name = "nm_documento")
-    String nomeDocumento;
+    private String nomeDocumento;
+    @Column(name = "caminho_doc",length = 300)
+    private String caminhoDocumento;
     
     @ManyToOne
-    Resposta resposta;
+    @JoinColumn(name = "id_resposta", referencedColumnName = "id")
+    private Resposta resposta;
+
+    /**
+     * @return the id
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the nomeDocumento
+     */
+    public String getNomeDocumento() {
+        return nomeDocumento;
+    }
+
+    /**
+     * @param nomeDocumento the nomeDocumento to set
+     */
+    public void setNomeDocumento(String nomeDocumento) {
+        this.nomeDocumento = nomeDocumento;
+    }
+
+    /**
+     * @return the resposta
+     */
+    public Resposta getResposta() {
+        return resposta;
+    }
+
+    /**
+     * @param resposta the resposta to set
+     */
+    public void setResposta(Resposta resposta) {
+        this.resposta = resposta;
+    }
+
+    /**
+     * @return the caminhoDocumento
+     */
+    public String getCaminhoDocumento() {
+        return caminhoDocumento;
+    }
+
+    /**
+     * @param caminhoDocumento the caminhoDocumento to set
+     */
+    public void setCaminhoDocumento(String caminhoDocumento) {
+        this.caminhoDocumento = caminhoDocumento;
+    }
     
     
 }

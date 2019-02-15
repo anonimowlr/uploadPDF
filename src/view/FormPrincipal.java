@@ -221,57 +221,63 @@ public class FormPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        
-        try {
-            DataExecucao dataExecucao = new DataExecucao();
-            
-            String data = null;
-            
-            while (data == null || data.equals("")) {
-                
-                data = JOptionPane.showInputDialog("Informe a data das pastas no diretório G:","dd/mm/yyyy");
-                
-                if (data == null || data.equals("")) {
-                    
-                    JOptionPane.showMessageDialog(null,
-                            
-                            "Você não informou uma data válida");
+
+        Thread thread = new Thread() {
+            public void run() {
+                try {
+                    DataExecucao dataExecucao = new DataExecucao();
+
+                    String data = null;
+
+                    while (data == null || data.equals("")) {
+
+                        data = JOptionPane.showInputDialog("Informe a data das pastas no diretório G:", "dd/mm/yyyy");
+
+                        if (data == null || data.equals("")) {
+
+                            JOptionPane.showMessageDialog(null,
+                                    "Você não informou uma data válida");
+                        }
+
+                    }
+
+                    dataExecucao.setDataExec(Utils.converterParaCalendar(data));
+
+                    LerTxtTarefas importar = new LerTxtTarefas();
+
+                    JFileChooser arquivo = Utils.getFileChooser();
+
+                    int returnVal = arquivo.showOpenDialog(arquivo);
+                    if (returnVal == JFileChooser.APPROVE_OPTION) {
+                        Utils.setLastDir(arquivo.getSelectedFile());
+                        String arquivoSelecionado = arquivo.getSelectedFile().getAbsolutePath();
+                        File f = new File(arquivoSelecionado);
+                        long tamanho = (f.length() / 1024) / 1024;
+
+                        int comprimento = arquivoSelecionado.length();
+
+                        txtAviso.setText("Aguarde o fim da importação do arquivo ");
+                        importar.importarTxt(arquivoSelecionado, dataExecucao);
+                        txtAviso.setText("");
+
+                    }
+
+                } catch (Exception ex) {
+                    Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "erro - " + ex);
+                    txtAviso.setText("");
                 }
-                
-            }
-            
-            dataExecucao.setDataExec(Utils.converterParaCalendar(data));
-
-            LerTxtTarefas importar = new LerTxtTarefas();
-
-            JFileChooser arquivo = Utils.getFileChooser();
-
-            int returnVal = arquivo.showOpenDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                Utils.setLastDir(arquivo.getSelectedFile());
-                String arquivoSelecionado = arquivo.getSelectedFile().getAbsolutePath();
-                File f = new File(arquivoSelecionado);
-                long tamanho = (f.length() / 1024) / 1024;
-
-                int comprimento = arquivoSelecionado.length();
-               
-                 txtAviso.setText("Aguarde o fim da importação do arquivo " );
-                importar.importarTxt(arquivoSelecionado, dataExecucao);
-               
-                
 
             }
-        } catch (Exception ex) {
-            Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "erro - " + ex);
-        }
+        };
+        thread.start();
 
 
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
-         * @param args the command line arguments
-         */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

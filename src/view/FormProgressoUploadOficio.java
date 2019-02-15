@@ -143,7 +143,7 @@ public class FormProgressoUploadOficio extends javax.swing.JFrame {
 
                         lblTitulo.setText("Efetuando gravação dos nomes de arquivos em banco de dados : - Início - "  + Utils.getDataHoraAtualMysql());
                         btnIniciar.setEnabled(false);
-                        uploadAOF.lerDiretorio(diretorio);
+                        uploadAOF.iniciar(diretorio);
                         
                         
                         btnIniciar.setEnabled(true);
@@ -153,8 +153,8 @@ public class FormProgressoUploadOficio extends javax.swing.JFrame {
                         lblTitulo.setText("Feche esta tela e inicia o carregamento dos documentos no Portal a partir no menu iniciar");
                     } catch (Exception ex) {
 
-                        JOptionPane.showMessageDialog(null, "Erro ao ler os arquivos - reinicie o procedimento");
-                         System.exit(0);
+                        JOptionPane.showMessageDialog(null, "Erro ao ler os arquivos - reinicie o procedimento" + ex);// desenvolver metodo aqui para salvar em banco de dados o erro gerado
+                      
                     }
       
       

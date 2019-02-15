@@ -67,7 +67,7 @@ public class LerTxtTarefas {
                                                       
                                                         
                                                         Resposta resposta = new Resposta();
-                                                        resposta.setAof(campos[0]);
+                                                        resposta.setAof(Utils.tratarVariavel(campos[0]));
                                                         resposta.setDataReagendamento(Utils.converterParaCalendar(campos[1]));
                                                         resposta.setMensagemResposta(campos[2]);
                                                         resposta.setDataImportacaoTxt(Utils.getDataAtualCalendar());

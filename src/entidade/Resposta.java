@@ -5,6 +5,7 @@
  */
 package entidade;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -59,9 +60,14 @@ public class Resposta {
    
    
    @OneToMany(mappedBy = "resposta",cascade = CascadeType.ALL)
-   private List<Documento> listaDocumentos ;
+   private List<Documento> listaDocumentos = new ArrayList<>() ;
    
    
+   
+   public void adicionarDocumento(Documento  documento){
+       documento.setResposta(this);
+       listaDocumentos.add(documento);
+   }
   
    
 
