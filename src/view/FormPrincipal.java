@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import rotina.LerTxtTarefas;
+import rotina.UploadAOF;
 import rotina.UploadAofPortal;
 import util.Utils;
 
@@ -161,7 +162,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem2);
 
-        jMenuItem4.setText("Ler pasta com Documentos");
+        jMenuItem4.setText("Importar pasta com Documentos");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);
@@ -185,10 +186,13 @@ public class FormPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtAviso, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtAviso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,8 +212,77 @@ public class FormPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        FormProgressoUploadOficio form = new FormProgressoUploadOficio();
-        form.setVisible(true);
+        try{
+        UploadAOF uploadAOF = new UploadAOF();
+
+        this.setTitle("Carregamento de arquivos para upload");
+
+        Thread thread = new Thread() {
+
+            public void run() {//double a, String b, int c, Date k
+            
+     FormProgressoUploadOficio bar = new FormProgressoUploadOficio();
+                
+    JFileChooser chooser = new JFileChooser();
+    chooser.setCurrentDirectory(new java.io.File("."));
+    chooser.setDialogTitle("Escolha a pasta que contem os arquivos para upload");
+    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    chooser.setAcceptAllFileFilterUsed(false);
+
+    if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+//      System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
+//      System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
+      String diretorio = chooser.getSelectedFile().toString();
+      
+      try {
+
+                        txtAviso.setText("Efetuando gravação dos nomes de arquivos em banco de dados : - Início - "  + Utils.getDataHoraAtualMysql());
+                       
+                        uploadAOF.iniciar(diretorio);
+                        
+                        
+                        txtAviso.setText("");
+                        
+                       
+                        JOptionPane.showMessageDialog(null, "Fim da rotina:" + Utils.getDataHoraAtualMysql() + '\n' + "Execute o upload dos arquivos para o Portal Jurídico");
+                    
+                    } catch (Exception ex) {
+
+                        JOptionPane.showMessageDialog(null, "Erro ao ler os arquivos - reinicie o procedimento" + ex);// desenvolver metodo aqui para salvar em banco de dados o erro gerado
+                      
+                    }
+      
+      
+      
+      
+    } else {
+        JOptionPane.showMessageDialog(null, "Nenhuma pasta Selecionada");
+    }
+    
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+
+                }
+            
+
+            
+        };
+        
+       
+        thread.start();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "ERRO - "  + e);
+            return;
+        }
+
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed

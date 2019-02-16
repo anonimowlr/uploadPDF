@@ -32,13 +32,13 @@ public class DataExecucao implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @Column(name = "dt_exec")
+    @Column(name = "dt_exec", unique = true)
     @Temporal(TemporalType.DATE)
     private Calendar dataExec;
     @Column(name = "realizado")
-    private Boolean realizada;
+    private String realizada;
     
-    @OneToMany(mappedBy ="dataDeExecucao",cascade =CascadeType.ALL)
+    @OneToMany(mappedBy ="dataDeExecucao",cascade =CascadeType.ALL, orphanRemoval = true)
     private List<Resposta> respostas = new ArrayList<>();
     
     
@@ -73,14 +73,14 @@ public class DataExecucao implements Serializable{
     /**
      * @return the realizada
      */
-    public Boolean getRealizada() {
+    public String getRealizada() {
         return realizada;
     }
 
     /**
      * @param realizada the realizada to set
      */
-    public void setRealizada(Boolean realizada) {
+    public void setRealizada(String realizada) {
         this.realizada = realizada;
     }
 

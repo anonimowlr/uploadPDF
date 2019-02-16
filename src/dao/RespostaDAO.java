@@ -45,10 +45,15 @@ public class RespostaDAO {
     }
 
     public List<DataExecucao> buscar() {
-     return   em.createQuery("From DataExecucao c where c.realizada = null").getResultList();
-
+        
+     
+           return   em.createQuery("From DataExecucao c where c.realizada = null").getResultList();
+    
+        
 
 
     }
+    
+    
     
 }

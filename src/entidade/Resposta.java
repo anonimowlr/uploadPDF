@@ -51,6 +51,11 @@ public class Resposta {
    private Calendar dataPesquisaPasta;
    @Column(name = "usu_func")
    private String   funcionarioResponsavel;
+   @Column(name = "qtd_documento")
+   private Integer qtdDoc;
+   
+   @Column(name = "env_portal")
+   private String enviadoPortal;
    
    
    @ManyToOne
@@ -59,14 +64,14 @@ public class Resposta {
    
    
    
-   @OneToMany(mappedBy = "resposta",cascade = CascadeType.ALL)
+   @OneToMany(mappedBy = "resposta",cascade = CascadeType.ALL,orphanRemoval = true)
    private List<Documento> listaDocumentos = new ArrayList<>() ;
    
    
    
    public void adicionarDocumento(Documento  documento){
        documento.setResposta(this);
-       listaDocumentos.add(documento);
+        getListaDocumentos().add(documento);
    }
   
    
@@ -206,6 +211,34 @@ public class Resposta {
      */
     public void setDataDeExecucao(DataExecucao dataDeExecucao) {
         this.dataDeExecucao = dataDeExecucao;
+    }
+
+    /**
+     * @return the qtdDoc
+     */
+    public Integer getQtdDoc() {
+        return qtdDoc;
+    }
+
+    /**
+     * @param qtdDoc the qtdDoc to set
+     */
+    public void setQtdDoc(Integer qtdDoc) {
+        this.qtdDoc = qtdDoc;
+    }
+
+    /**
+     * @return the enviadoPortal
+     */
+    public String getEnviadoPortal() {
+        return enviadoPortal;
+    }
+
+    /**
+     * @param enviadoPortal the enviadoPortal to set
+     */
+    public void setEnviadoPortal(String enviadoPortal) {
+        this.enviadoPortal = enviadoPortal;
     }
    
     

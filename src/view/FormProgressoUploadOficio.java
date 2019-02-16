@@ -149,8 +149,8 @@ public class FormProgressoUploadOficio extends javax.swing.JFrame {
                         btnIniciar.setEnabled(true);
                         
                        
-                        JOptionPane.showMessageDialog(null, "Fim da atualizaçao:" + Utils.getDataHoraAtualMysql() + '\n' + "Execute o upload dos arquivos para o Portal Jurídico");
-                        lblTitulo.setText("Feche esta tela e inicia o carregamento dos documentos no Portal a partir no menu iniciar");
+                        JOptionPane.showMessageDialog(null, "Fim da rotina:" + Utils.getDataHoraAtualMysql() + '\n' + "Execute o upload dos arquivos para o Portal Jurídico");
+                    
                     } catch (Exception ex) {
 
                         JOptionPane.showMessageDialog(null, "Erro ao ler os arquivos - reinicie o procedimento" + ex);// desenvolver metodo aqui para salvar em banco de dados o erro gerado

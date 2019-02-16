@@ -27,45 +27,49 @@ public class UploadAOF {
     List<DataExecucao> listaDataExecucao = new ArrayList<>();
     List<Resposta> listaResposta = new ArrayList<>();
 
-    public void iniciar(String diretorio) throws IOException, InterruptedException {
-        createList();
-        lerLista(diretorio);
+    public void iniciar(String diretorio) throws IOException, InterruptedException, Exception {
+        createList(diretorio);
         gravarDados();
     }
 
-    public void createList() {// método cria a lista com  as tarefas a serem executadas
+    public void createList(String diretorio) {// método cria a lista com  as tarefas a serem executadas
 
-        listaDataExecucao = respostaDAO.buscar();
+        try {
+            listaDataExecucao = respostaDAO.buscar();
 
-        for (DataExecucao dataExecucao : listaDataExecucao) {
-            listaResposta = dataExecucao.getRespostas();
+            for (DataExecucao dataExecucao : listaDataExecucao) {
+                listaResposta = dataExecucao.getRespostas();
+                lerLista(diretorio);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "ERRO-" + e);
         }
     }
 
-    public void lerLista(String diretorio) throws IOException, InterruptedException {
+    public void lerLista(String diretorio) throws IOException, InterruptedException, Exception {
 
         for (Resposta resposta : listaResposta) {
-            lerDiretorio(diretorio, resposta);
+            if (resposta.getListaDocumentos().isEmpty()) {
+                lerDiretorio(diretorio, resposta);
+            }
 
         }
-        
 
     }
-    
-    
-     private void gravarDados() {
 
-          for (DataExecucao dataExecucao : listaDataExecucao) {
-            respostaDAO.salvar(dataExecucao);
-           
-     }
-     }
-    
-    
-    
-    
+    private void gravarDados() throws Exception {
 
-    public void lerDiretorio(String diretorio, Resposta resposta) throws IOException, InterruptedException {
+        for (DataExecucao dataExecucao : listaDataExecucao) {
+            if (respostaDAO.salvar(dataExecucao)) {
+                JOptionPane.showMessageDialog(null, "Gravado no banco de dados os documentos referentes  à data " + Utils.formataDateSQL(dataExecucao.getDataExec().getTime()));
+            } else {
+                JOptionPane.showMessageDialog(null, "ERRO - Não foi possível gravar os documentos  referentes  à data " + Utils.formataDateSQL(dataExecucao.getDataExec().getTime()));
+            }
+
+        }
+    }
+
+    public void lerDiretorio(String diretorio, Resposta resposta) throws IOException, InterruptedException, Exception {
 
         File pasta = new File(diretorio);
         File afile[] = pasta.listFiles();
@@ -78,7 +82,7 @@ public class UploadAOF {
                 subDiretorio = pastas.getName();
 
                 if (Utils.tratarVariavel(subDiretorio).equals(Utils.tratarVariavel(resposta.getAof()))) {
-                  
+
                     String caminhoPastaSubpasta = diretorio + "\\" + subDiretorio;
                     caminhoPastaSubpasta = diretorio + "\\" + subDiretorio;
 
@@ -90,40 +94,31 @@ public class UploadAOF {
                         File conteudo = afilesubpasta[l];
                         String nomeConteudo = conteudo.getName();
 
-                        String caminhoCompleto = caminhoPastaSubpasta + "\\" + nomeConteudo  ;
-                        
-                        
+                        String caminhoCompleto = caminhoPastaSubpasta + "\\" + nomeConteudo;
+
                         if (afilesubpasta[l].isDirectory()) {
-                            
 
-                                            File subsubPasta = new File(caminhoCompleto);
-                                            File afilesubsubpasta[] = subsubPasta.listFiles();
+                            File subsubPasta = new File(caminhoCompleto);
+                            
+                            File afilesubsubpasta[] = subsubPasta.listFiles();
+                         
 
-                            
-                            
-                            
-                                        String subsubDiretorio = pastas.getName();
-                                        subsubDiretorio = pastas.getName();
-                                        
-                                        int m = 0;
-                                        
-                                        for(int y = afilesubsubpasta.length;m<y;m++){
-                                            Documento documento = new Documento();
-                                             conteudo = afilesubsubpasta[m];
-                                             nomeConteudo = conteudo.getName();
-                                             documento.setNomeDocumento(nomeConteudo);
-                                             documento.setCaminhoDocumento(conteudo.toString());
-                                             resposta.adicionarDocumento(documento);
-                                             
-                                            
-                                        }
-                                        
+                            if (Utils.tratarVariavel(Utils.formataDataDMY(Utils.formataDateSQL(resposta.getDataDeExecucao().getDataExec().getTime()))).equals(Utils.tratarVariavel(nomeConteudo))) {
+                                int m = 0;
+
+                                for (int y = afilesubsubpasta.length; m < y; m++) {
+                                    Documento documento = new Documento();
+                                    conteudo = afilesubsubpasta[m];
+                                    nomeConteudo = conteudo.getName();
+                                    documento.setNomeDocumento(nomeConteudo);
+                                    documento.setCaminhoDocumento(conteudo.toString());
+                                    resposta.setQtdDoc(y);
+                                    resposta.adicionarDocumento(documento);
+
+                                }
+                            }
+
                         }
-                        
-                        
-                        
-
-                      
 
                     }
 
@@ -134,7 +129,5 @@ public class UploadAOF {
         }
 
     }
-
-   
 
 }
