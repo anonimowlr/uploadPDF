@@ -45,14 +45,16 @@ public class LerTxtTarefas {
                 while (proximaPagina) {
 
                     linha = buferArquivo.readLine();
-                    if (linha.equals("")) {
+                    if (linha == null) {
                         proximaPagina = false;
-                      
-                        if(respostaDAO.salvar(dataExecucao)){
+
+                        if (respostaDAO.salvar(dataExecucao)) {
                             JOptionPane.showMessageDialog(null, " SUCESSO -Lista de respostas salva  , agora importe a pasta com os documentos");
-                            
-                        } else{
-                             JOptionPane.showMessageDialog(null, "ERRO - Falha ao salvar o Arquivo TXT com as  respostas");
+                            return;
+
+                        } else {
+                            JOptionPane.showMessageDialog(null, "ERRO - Falha ao salvar o Arquivo TXT com as  respostas");
+                            return;
                         }
 
                     }
@@ -82,7 +84,6 @@ public class LerTxtTarefas {
             } catch (Exception e) {
 
                 JOptionPane.showMessageDialog(null, "Erro na leitura do arquivo: " + caminhoArquivo + "  - " + e);
-                
 
             }
 

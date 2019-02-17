@@ -16,26 +16,22 @@ import jpa.EntityManagerUtil;
  * @author f5078775
  */
 public class RespostaDAO {
+
     EntityManager em = EntityManagerUtil.getEntityManager();
-    
-    
-    
-    
+
     public boolean salvar(DataExecucao dataExecucao) {
 
-        
-        
-        try{
-        em.getTransaction().begin();
-        if(dataExecucao.getId()==null){
-            em.persist(dataExecucao);
-        }else{
-            em.merge(dataExecucao);
-        }
-        em.getTransaction().commit();
-        return true;
-        }catch(Exception e){
-            if(em.getTransaction().isActive()== false){
+        try {
+            em.getTransaction().begin();
+            if (dataExecucao.getId() == null) {
+                em.persist(dataExecucao);
+            } else {
+                em.merge(dataExecucao);
+            }
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive() == false) {
                 em.getTransaction().begin();
             }
             em.getTransaction().rollback();
@@ -45,15 +41,31 @@ public class RespostaDAO {
     }
 
     public List<DataExecucao> buscar() {
-        
-     
-           return   em.createQuery("From DataExecucao c where c.realizada = null").getResultList();
-    
-        
 
+        return em.createQuery("From DataExecucao c where c.realizada = null").getResultList();
 
     }
-    
-    
-    
+    public List<DataExecucao> listarTodos() {
+
+        return em.createQuery("From DataExecucao c ").getResultList();
+
+    }
+
+    public boolean excluir(Integer index) {
+
+        try {
+            DataExecucao objeto = em.find(DataExecucao.class, index);
+            
+            em.getTransaction().begin();
+            em.remove(objeto);
+            em.getTransaction().commit();
+            
+            return true;
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            return false;
+
+        }
+    }
+
 }
