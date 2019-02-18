@@ -134,10 +134,10 @@ listaDataExecucao =  respostaDAO.buscar();
     }
 
     private void processaPortal(Documento documento) {
-//       coletas.setURL("https://juridico.intranet.bb.com.br/wfj/oficio/triagem/cumprimentoContinuado/listar");
-//       coletas.aguardaElementoTelaByID("triagemForm:tipoDocumentoDecorate:tipoDocumentoListBox");
+       coletas.setURL("https://juridico.intranet.bb.com.br/wfj/oficio/triagem/cumprimentoContinuado/listar");
+       coletas.aguardaElementoTelaByID("triagemForm:tipoDocumentoDecorate:tipoDocumentoListBox");
 
-documento.setSitDocumento("processado");
+        documento.setSitDocumento("processado");
 
     }
 
