@@ -28,6 +28,8 @@ public class Documento {
     private String nomeDocumento;
     @Column(name = "caminho_doc",length = 300)
     private String caminhoDocumento;
+    @Column(name = "sit_doc")
+    private String sitDocumento;
     
     @ManyToOne
     @JoinColumn(name = "id_resposta", referencedColumnName = "id")
@@ -87,6 +89,20 @@ public class Documento {
      */
     public void setCaminhoDocumento(String caminhoDocumento) {
         this.caminhoDocumento = caminhoDocumento;
+    }
+
+    /**
+     * @return the sitDocumento
+     */
+    public String getSitDocumento() {
+        return sitDocumento;
+    }
+
+    /**
+     * @param sitDocumento the sitDocumento to set
+     */
+    public void setSitDocumento(String sitDocumento) {
+        this.sitDocumento = sitDocumento;
     }
     
     

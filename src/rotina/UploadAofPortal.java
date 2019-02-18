@@ -20,15 +20,15 @@ import util.Utils;
  *
  * @author f5078775
  */
-public class UploadAofPortal extends Thread{
+public class UploadAofPortal{
  Coletas coletas = new Coletas();   
  RespostaDAO  respostaDAO = new RespostaDAO();
  List<DataExecucao> listaDataExecucao = new ArrayList<>();
  List<Resposta> listaResposta = new ArrayList<>();
  List<Documento> listaDocumento = new ArrayList<>();
  
- @Override
- public void run(){
+
+ public void iniciar(){
    
    
      
@@ -106,10 +106,17 @@ listaDataExecucao =  respostaDAO.buscar();
         listaDocumento = resposta.getListaDocumentos();
        JavascriptExecutor js = (JavascriptExecutor)driver;
       
-//       coletas.setURL("https://juridico.intranet.bb.com.br/wfj/oficio/triagem/cumprimentoContinuado/listar");
-//       coletas.aguardaElementoTelaByID("triagemForm:tipoDocumentoDecorate:tipoDocumentoListBox");
+
        
         for (Documento documento : listaDocumento) {
+            if( documento.getNomeDocumento().contains(".DOC")){
+               continue;
+            }
+            
+            if(documento.getSitDocumento()==null){
+                 processaPortal(documento);
+            }
+           
             
           if(listaDocumento.get(listaDocumento.size() -1 ).equals(documento)){// verifica se o objeto é o ultimo da lista
             documento.getResposta().setObs(resposta.getQtdDoc() + " Documentos enviados");
@@ -124,6 +131,14 @@ listaDataExecucao =  respostaDAO.buscar();
        
      
        
+    }
+
+    private void processaPortal(Documento documento) {
+//       coletas.setURL("https://juridico.intranet.bb.com.br/wfj/oficio/triagem/cumprimentoContinuado/listar");
+//       coletas.aguardaElementoTelaByID("triagemForm:tipoDocumentoDecorate:tipoDocumentoListBox");
+
+documento.setSitDocumento("processado");
+
     }
 
    

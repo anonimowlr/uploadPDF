@@ -126,6 +126,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTable);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -196,6 +197,7 @@ public class FormPrincipal extends javax.swing.JFrame {
 
         txtAviso.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         txtAviso.setForeground(new java.awt.Color(0, 0, 204));
+        txtAviso.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txtAviso.setAlignmentX(1.0F);
         txtAviso.setAlignmentY(2.0F);
 
@@ -247,9 +249,9 @@ public class FormPrincipal extends javax.swing.JFrame {
         jPanelLayout.setVerticalGroup(
             jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(14, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jButton1)
                 .addGap(6, 6, 6))
         );
@@ -309,7 +311,7 @@ public class FormPrincipal extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(txtAviso, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, 551, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -403,8 +405,9 @@ public class FormPrincipal extends javax.swing.JFrame {
                 try {
                     UploadAofPortal uploadAofportal = new UploadAofPortal();
                     txtAviso.setText("Enviando documentos para o Portal Jurídico");
-                    uploadAofportal.start();
-                    txtAviso.setText("");
+                    uploadAofportal.iniciar();
+                     txtAviso.setText("");
+               
 
                 } catch (Exception ex) {
                     Logger.getLogger(FormPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -415,6 +418,7 @@ public class FormPrincipal extends javax.swing.JFrame {
             }
         };
         thread.start();
+       
 
 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
