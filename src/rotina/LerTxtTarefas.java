@@ -66,7 +66,12 @@ public class LerTxtTarefas {
 
                     Resposta resposta = new Resposta();
                     resposta.setAof(Utils.tratarVariavel(campos[0]));
-                    resposta.setDataReagendamento(Utils.converterParaCalendar(campos[1]));
+                    if(campos[1].contains("9999")){
+                         resposta.setDataReagendamento(null);
+                    } else{
+                         resposta.setDataReagendamento(Utils.converterParaCalendar(campos[1]));
+                    }
+                   
                     resposta.setMensagemResposta(campos[2]);
                     resposta.setDataImportacaoTxt(Utils.getDataAtualCalendar());
                     resposta.setDataDeExecucao(dataExecucao);
